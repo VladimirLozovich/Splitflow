@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import './Auth.css';
-import './Inputs.css';
-import './Buttons.css';
+import '../../pages/Auth/Auth.css';
+import '../Inputs/Inputs.css';
+import '../Buttons/Button.css';
 
 const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, currentUser }) => {
-  
+
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("green");
   const [project, setProject] = useState("nasledie");
   const [deadline, setDeadline] = useState("14.06.2025");
-  
-  const [assigneeId, setAssigneeId] = useState(""); 
+
+  const [assigneeId, setAssigneeId] = useState("");
 
   useEffect(() => {
     if (isOpen) {
@@ -18,7 +18,7 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, cur
       setPriority("green");
       setDeadline("14.06.2025");
       setAssigneeId(""); // Сбрасываем ID
-      
+
       if (currentProject && currentProject !== 'all') {
         setProject(currentProject);
       } else {
@@ -43,9 +43,9 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, cur
       project: project,
       status: initialStatus,
       deadline: deadline,
-      
+
       assigneeId: parseInt(assigneeId) || 0,
-      
+
       supervisorAvatar: currentUser?.avatar || currentUser?.Avatar || "default.jpg"
     };
 
@@ -55,9 +55,9 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, cur
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div 
-        className="auth-card modal-content" 
-        onClick={(e) => e.stopPropagation()} 
+      <div
+        className="auth-card modal-content"
+        onClick={(e) => e.stopPropagation()}
         style={{ maxWidth: '500px', width: '100%', padding: '40px' }}
       >
         <h2 style={{ fontSize: '24px', marginBottom: '20px', fontFamily: 'Onest, sans-serif' }}>
@@ -65,33 +65,33 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, cur
         </h2>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          
+
           <div className="input-wrapper">
-            <input 
-              className="custom-input" 
-              placeholder="Название задачи" 
-              value={title} 
+            <input
+              className="custom-input"
+              placeholder="Название задачи"
+              value={title}
               autoFocus
-              onChange={(e) => setTitle(e.target.value)} 
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
           {/* ID Исполнителя */}
           <div className="input-wrapper">
-            <input 
-              className="custom-input" 
+            <input
+              className="custom-input"
               type="number"
-              placeholder="ID Исполнителя (например: 1)" 
-              value={assigneeId} 
-              onChange={(e) => setAssigneeId(e.target.value)} 
+              placeholder="ID Исполнителя (например: 1)"
+              value={assigneeId}
+              onChange={(e) => setAssigneeId(e.target.value)}
             />
           </div>
 
           <div style={{ display: 'flex', gap: '12px' }}>
             <div className="input-wrapper">
-              <select 
-                className="custom-input" 
-                value={priority} 
+              <select
+                className="custom-input"
+                value={priority}
                 onChange={(e) => setPriority(e.target.value)}
               >
                 <option value="green">Низкий</option>
@@ -101,9 +101,9 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, cur
             </div>
 
             <div className="input-wrapper">
-              <select 
-                className="custom-input" 
-                value={project} 
+              <select
+                className="custom-input"
+                value={project}
                 onChange={(e) => setProject(e.target.value)}
                 disabled={currentProject !== 'all'}
               >
@@ -115,11 +115,11 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, cur
           </div>
 
           <div className="input-wrapper">
-            <input 
-              className="custom-input" 
-              placeholder="Срок сдачи" 
-              value={deadline} 
-              onChange={(e) => setDeadline(e.target.value)} 
+            <input
+              className="custom-input"
+              placeholder="Срок сдачи"
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
             />
           </div>
 
@@ -128,15 +128,15 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus, currentProject, cur
         <div className="auth-divider" style={{ margin: '24px 0' }}></div>
 
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
-            className="btn btn-primary" 
+          <button
+            className="btn btn-primary"
             style={{ backgroundColor: 'var(--color-bg-work)', color: 'var(--color-text)', flex: 1 }}
             onClick={onClose}
           >
             Отмена
           </button>
-          <button 
-            className="btn btn-primary" 
+          <button
+            className="btn btn-primary"
             style={{ flex: 2 }}
             onClick={handleSubmit}
           >

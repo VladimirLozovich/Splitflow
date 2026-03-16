@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import { 
-  LogOut, 
-  LayoutDashboard, 
-  Package, 
-  Users, 
-  Filter, 
+import React, { useState } from 'react';
+import {
+  LogOut,
+  LayoutDashboard,
+  Package,
+  Users,
+  Filter,
   ChevronDown,
-  Amphora 
+  Amphora
 } from 'lucide-react';
 import './Header.css';
-import './buttons.css'
-import { PROJECTS } from './constants.js';
+import '../Buttons/Button.css'
+import { PROJECTS } from '../../constants.js';
 
 const Header = ({ user, onLogout, activeTab, setActiveTab, currentProject, setCurrentProject }) => {
   const [isProjectMenuOpen, setMenuOpen] = useState(false);
@@ -18,21 +18,21 @@ const Header = ({ user, onLogout, activeTab, setActiveTab, currentProject, setCu
   const projectKey = currentProject ? currentProject.toUpperCase() : 'ALL';
   const activeProjConfig = PROJECTS[projectKey] || PROJECTS.ALL;
   const ActiveIcon = activeProjConfig.icon;
-  
+
   const handleProjectSelect = (projKey) => {
     setCurrentProject(PROJECTS[projKey].id);
     setMenuOpen(false);
   };
 
 
-  const avatarUrl = (user?.avatar || user?.Avatar) 
-  ? `/avatars/${user.avatar || user.Avatar}` 
-  : '/avatars/default.jpg';
+  const avatarUrl = (user?.avatar || user?.Avatar)
+    ? `/avatars/${user.avatar || user.Avatar}`
+    : '/avatars/default.jpg';
   console.log(user.Avatar);
 
   return (
     <div className="header-container">
-      
+
       {/* 1. ОСТРОВ ПРОФИЛЯ */}
       <div className="island profile-island">
         <div className="avatar-wrapper">
@@ -54,8 +54,8 @@ const Header = ({ user, onLogout, activeTab, setActiveTab, currentProject, setCu
 
       {/* 2. ОСТРОВ НАВИГАЦИИ */}
       <div className="island nav-island">
-        
-        <button 
+
+        <button
           className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
           onClick={() => setActiveTab('dashboard')}
         >
@@ -63,7 +63,7 @@ const Header = ({ user, onLogout, activeTab, setActiveTab, currentProject, setCu
           <span>Дэшборд</span>
         </button>
 
-        <button 
+        <button
           className={`nav-item ${activeTab === 'tasks' ? 'active' : ''}`}
           onClick={() => setActiveTab('tasks')}
         >
@@ -71,7 +71,7 @@ const Header = ({ user, onLogout, activeTab, setActiveTab, currentProject, setCu
           <span>Задачи</span>
         </button>
 
-        <button 
+        <button
           className={`nav-item ${activeTab === 'employees' ? 'active' : ''}`}
           onClick={() => setActiveTab('employees')}
         >
@@ -81,8 +81,8 @@ const Header = ({ user, onLogout, activeTab, setActiveTab, currentProject, setCu
 
       </div>
 
-      <div className="island project-island" style={{position: 'relative'}}>
-        
+      <div className="island project-island" style={{ position: 'relative' }}>
+
         <div className="project-selector" onClick={() => setMenuOpen(!isProjectMenuOpen)}>
           <div className="project-icon-box" style={{ backgroundColor: activeProjConfig.color }}>
             <ActiveIcon size={20} />
@@ -114,28 +114,28 @@ const Header = ({ user, onLogout, activeTab, setActiveTab, currentProject, setCu
               const proj = PROJECTS[key];
               const Icon = proj.icon;
               return (
-                <div 
-                  key={key} 
+                <div
+                  key={key}
                   onClick={() => handleProjectSelect(key)}
                   style={{
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '10px', 
-                    padding: '10px', 
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '10px',
                     cursor: 'pointer',
                     borderRadius: '10px',
                     background: currentProject === proj.id ? '#EEEFF4' : 'transparent'
                   }}
                 >
                   <div style={{
-                    width: '30px', height: '30px', 
-                    background: proj.color, 
-                    borderRadius: '8px', 
+                    width: '30px', height: '30px',
+                    background: proj.color,
+                    borderRadius: '8px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
                   }}>
-                    <Icon size={16}/>
+                    <Icon size={16} />
                   </div>
-                  <span style={{fontWeight: 600, fontSize: '14px'}}>{proj.label}</span>
+                  <span style={{ fontWeight: 600, fontSize: '14px' }}>{proj.label}</span>
                 </div>
               )
             })}

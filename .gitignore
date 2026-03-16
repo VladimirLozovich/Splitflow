@@ -35,3 +35,5 @@ appsettings.json
 logs/
 
 client\dist\avatars
+
+.working-assets

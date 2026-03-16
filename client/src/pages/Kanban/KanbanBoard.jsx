@@ -1,6 +1,6 @@
 import React from 'react';
 import { Plus } from 'lucide-react';
-import TaskCard from './TaskCard';
+import TaskCard from '../../components/TaskCard/TaskCard';
 import './Kanban.css';
 
 // --- КОМПОНЕНТ ЗАГОЛОВКА КОЛОНКИ ---
@@ -23,9 +23,9 @@ const ColumnHeader = ({ status, count, onAdd }) => {
         <span className="column-title">{title}</span>
         <span className="task-count">{count}</span>
       </div>
-      
-      <button 
-        className="btn-icon btn" 
+
+      <button
+        className="btn-icon btn"
         onClick={() => {
           console.log(`[ColumnHeader] Клик по плюсу в колонке: ${status}`);
           onAdd(); // Вызываем функцию, переданную сверху
@@ -38,7 +38,7 @@ const ColumnHeader = ({ status, count, onAdd }) => {
 };
 
 const KanbanBoard = ({ tasks, onAdd, onDelete, onNextStatus }) => {
-  
+
   console.log("[KanbanBoard] Рендер. Задач:", tasks.length);
 
   const todoTasks = tasks.filter(t => t.status === 'todo');
@@ -47,30 +47,30 @@ const KanbanBoard = ({ tasks, onAdd, onDelete, onNextStatus }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-      
+
       <h1 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '20px', marginTop: '50px', flexShrink: 0 }}>
         Текущие Задачи
       </h1>
-      
+
       <div className="kanban-board">
-        
+
         {/* Колонка TODO */}
         <div className="kanban-column">
-          <ColumnHeader 
-            status="todo" 
-            count={todoTasks.length} 
+          <ColumnHeader
+            status="todo"
+            count={todoTasks.length}
             onAdd={() => {
               console.log("[KanbanBoard] Вызываем onAdd('todo')");
-              onAdd('todo'); 
-            }} 
+              onAdd('todo');
+            }}
           />
           <div className="task-list">
             {todoTasks.map(task => (
-              <TaskCard 
-                key={task.id} 
-                task={task} 
-                onDelete={onDelete} 
-                onNextStatus={onNextStatus} 
+              <TaskCard
+                key={task.id}
+                task={task}
+                onDelete={onDelete}
+                onNextStatus={onNextStatus}
               />
             ))}
           </div>
@@ -78,10 +78,10 @@ const KanbanBoard = ({ tasks, onAdd, onDelete, onNextStatus }) => {
 
         {/* Колонка PROGRESS */}
         <div className="kanban-column">
-          <ColumnHeader 
-            status="progress" 
-            count={progressTasks.length} 
-            onAdd={() => onAdd('progress')} 
+          <ColumnHeader
+            status="progress"
+            count={progressTasks.length}
+            onAdd={() => onAdd('progress')}
           />
           <div className="task-list">
             {progressTasks.map(task => (
@@ -92,10 +92,10 @@ const KanbanBoard = ({ tasks, onAdd, onDelete, onNextStatus }) => {
 
         {/* Колонка DONE */}
         <div className="kanban-column">
-          <ColumnHeader 
-            status="done" 
-            count={doneTasks.length} 
-            onAdd={() => onAdd('done')} 
+          <ColumnHeader
+            status="done"
+            count={doneTasks.length}
+            onAdd={() => onAdd('done')}
           />
           <div className="task-list">
             {doneTasks.map(task => (
