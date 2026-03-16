@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import Header from './Header'; 
-import Footer from './Footer';
-import KanbanBoard from './KanbanBoard';
-import TaskModal from './TaskModal';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import KanbanBoard from './pages/Kanban/KanbanBoard';
+import TaskModal from './components/TaskModal/TaskModal';
 import { PROJECTS } from './constants'
-import EmployeesTable from './EmployeesTable';
-import Dashboard from './Dashboard';
+import EmployeesTable from './pages/EmployeesTable/EmployeesTable';
+import Dashboard from './pages/Dashboard/Dashboard';
 
-import './Buttons.css';
-import './Inputs.css';
-import './Auth.css';
+import './components/Buttons/Button.css';
+import './components/Inputs/Inputs.css';
+import './pages/Auth/Auth.css';
 import './index.css';
-import './Kanban.css';
+import './pages/Kanban/Kanban.css';
 
 // --- НАСТРОЙКИ ---
 // Порты бэкенда (из dotnet run)
-const AUTH_API_URL = "http://localhost:5268/api/auth/login"; 
+const AUTH_API_URL = "http://localhost:5268/api/auth/login";
 const TASKS_API_URL = "http://localhost:5268/api/tasks";
 
 // UI
@@ -25,9 +25,9 @@ const PrimaryButton = ({ text, onClick }) => (
 
 const InputField = ({ placeholder, type = "text", value, onChange }) => (
   <div className="input-wrapper">
-    <input 
-      className="custom-input" 
-      type={type} 
+    <input
+      className="custom-input"
+      type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -37,7 +37,7 @@ const InputField = ({ placeholder, type = "text", value, onChange }) => (
 
 function App() {
   // --- STATE: АВТОРИЗАЦИЯ ---
-  const [user, setUser] = useState(null); 
+  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -56,7 +56,7 @@ function App() {
   const fetchTasks = async () => {
     try {
       const res = await fetch(TASKS_API_URL);
-      
+
       if (!res.ok) {
         const errorText = await res.text();
         console.error("Ошибка сервера:", res.status, errorText);
@@ -65,8 +65,8 @@ function App() {
 
       const data = await res.json();
       setTasks(data);
-    } catch (e) { 
-      console.error("Ошибка сети или парсинга:", e); 
+    } catch (e) {
+      console.error("Ошибка сети или парсинга:", e);
     }
   };
 
@@ -152,22 +152,22 @@ function App() {
   };
 
   // РЕНДЕРИНГ
-  
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard />;
       case 'tasks':
-          return (
-            <KanbanBoard 
-              tasks={filteredTasks} 
-              onAdd={openAddModal} 
-              onDelete={handleDeleteTask}
-              onNextStatus={handleNextStatus}
-            />
-          );
+        return (
+          <KanbanBoard
+            tasks={filteredTasks}
+            onAdd={openAddModal}
+            onDelete={handleDeleteTask}
+            onNextStatus={handleNextStatus}
+          />
+        );
       case 'employees':
-          return <EmployeesTable />;
+        return <EmployeesTable />;
       default:
         return <h1>404</h1>;
     }
@@ -176,22 +176,22 @@ function App() {
   // 1. ЕСЛИ ПОЛЬЗОВАТЕЛЬ ВОШЕЛ
   if (user) {
     return (
-      <div style={{ 
-        backgroundColor: 'var(--color-bg-work)', 
+      <div style={{
+        backgroundColor: 'var(--color-bg-work)',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
       }}>
-        
+
         {/* Хедер */}
-        <div style={{ 
-          position: 'sticky', 
-          top: 0, 
-          zIndex: 100, 
+        <div style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
         }}>
-          <Header 
-            user={user} 
-            onLogout={handleLogout} 
+          <Header
+            user={user}
+            onLogout={handleLogout}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             currentProject={currentProject}
@@ -200,28 +200,23 @@ function App() {
         </div>
 
         {/* Контент */}
-        <div style={{ 
-          flexGrow: 1, 
-          padding: '0 40px', 
-          maxWidth: '1600px', 
-          width: '100%', 
+        <div style={{
+          flexGrow: 1,
+          padding: '0 40px',
+          maxWidth: '1600px',
+          width: '100%',
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          minHeight: 0 
+          minHeight: 0
         }}>
           {renderContent()}
         </div>
 
-        {/* Футер */}
-        <div style={{ flexShrink: 0 }}>
-          <Footer />
-        </div>
-
         {/* Модальное окно (поверх всего) */}
         {isModalOpen && (
-          <TaskModal 
+          <TaskModal
             isOpen={isModalOpen}
             onClose={() => setModalOpen(false)}
             onSave={handleCreateTask}
@@ -241,24 +236,24 @@ function App() {
       <div className="auth-left">
         <img src="/splitflow.png" alt="Splitflow" className="auth-logo-top" />
         <div className="auth-card">
+          <InputField
+            placeholder="Корпоративная почта"
+            value={email}
+            onChange={setEmail}
+          />
+          <InputField
+            placeholder="Пароль"
+            type="password"
+            value={password}
+            onChange={setPassword}
+          />
+          <div className="auth-divider"></div>
+          <PrimaryButton text="Продолжить" onClick={handleLogin} />
           <p className="auth-desc">
             Используйте только официально выданную ВИСК
             <br />
             корпоративную почту или почту одобренную комитетом.
           </p>
-          <InputField 
-            placeholder="Корпоративная почта" 
-            value={email}
-            onChange={setEmail} 
-          />
-          <InputField 
-            placeholder="Пароль" 
-            type="password"
-            value={password}
-            onChange={setPassword} 
-          />
-          <div className="auth-divider"></div>
-          <PrimaryButton text="Продолжить" onClick={handleLogin} />
           <p className="auth-footer">
             Продолжая вы соглашаетесь с текущим уставом ВИСК Анкерланда
           </p>
@@ -268,7 +263,6 @@ function App() {
       <div className="auth-right">
         <div className="castle-wrapper">
           <img src="/castle.png" alt="Castle" className="castle-image" />
-          <div className="castle-overlay"></div>
         </div>
       </div>
     </div>
